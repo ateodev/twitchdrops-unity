@@ -1,0 +1,16 @@
+{
+  "name": "io.antibore.twitchdrops",
+  "version": "1.0.0",
+  "displayName": "Twitch Drops",
+  "description": "Twitch Drop code redemption SDK for the Ateo Drops Platform.",
+  "unity": "2021.3",
+  "documentationUrl": "https://github.com/ateodev/twitchdrops-unity",
+  "changelogUrl": "https://github.com/ateodev/twitchdrops-unity/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/ateodev/twitchdrops-unity/blob/main/LICENSE",
+  "dependencies": {},
+  "keywords": ["twitch", "drops", "redemption"],
+  "author": {
+    "name": "Ateo",
+    "url": "https://antibore.io"
+  }
+}
