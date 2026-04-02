@@ -15,6 +15,10 @@ namespace Ateo.TwitchDrops.Editor
 
         public override void OnInspectorGUI()
         {
+            if (GUILayout.Button("Open Setup Guide  (Window > Antibore > Twitch Drops Setup)"))
+                TwitchDropsSetupWindow.Open();
+
+            EditorGUILayout.Space(6);
             DrawDefaultInspector();
 
             EditorGUILayout.Space(12);
@@ -65,21 +69,26 @@ namespace Ateo.TwitchDrops.Editor
 
             yield return req.SendWebRequest();
 
+            // Always log full details to Console for debugging.
+            Debug.Log($"[TwitchDrops] Test result={req.result} code={req.responseCode} error='{req.error}' body='{req.downloadHandler?.text}'");
+
             // 403 = bad secret (server reachable), 404 = code not found (authenticated OK)
             // Both confirm the endpoint is up and responding as expected.
             if (req.responseCode == 404 || req.responseCode == 403 || req.responseCode == 409)
-                _testStatus = $"Connected. Server responded {req.responseCode} (expected for test code).";
+                _testStatus = "Connection successful. Your credentials are correct.";
             else if (req.result == UnityWebRequest.Result.ConnectionError)
-                _testStatus = $"Connection failed: {req.error}";
+                _testStatus = $"Connection failed: {req.error}\n\nCheck that API Base URL is correct and reachable. See Console for details.";
+            else if (req.result == UnityWebRequest.Result.ProtocolError)
+                _testStatus = $"Server error {req.responseCode}: {req.downloadHandler?.text}\n\nSee Console for details.";
             else
-                _testStatus = $"Unexpected response: {req.responseCode} — {req.downloadHandler.text}";
+                _testStatus = $"Unexpected: result={req.result} code={req.responseCode}\n{req.error}\nSee Console for details.";
 
             _testing = false;
             Repaint();
         }
     }
 
-    // Minimal editor coroutine runner — no extra packages required.
+    // Minimal editor coroutine runner — waits for AsyncOperation yields.
     internal static class EditorCoroutine
     {
         public static void Start(IEnumerator routine)
@@ -87,6 +96,9 @@ namespace Ateo.TwitchDrops.Editor
             EditorApplication.CallbackFunction tick = null;
             tick = () =>
             {
+                // If currently yielding an AsyncOperation, wait until it's done.
+                if (routine.Current is AsyncOperation op && !op.isDone)
+                    return;
                 if (!routine.MoveNext())
                     EditorApplication.update -= tick;
             };

@@ -1,7 +1,9 @@
 {
     "name": "Ateo.TwitchDrops",
     "rootNamespace": "Ateo.TwitchDrops",
-    "references": [],
+    "references": [
+        "Unity.TextMeshPro"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

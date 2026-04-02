@@ -2,7 +2,8 @@
     "name": "Ateo.TwitchDrops.Editor",
     "rootNamespace": "Ateo.TwitchDrops.Editor",
     "references": [
-        "Ateo.TwitchDrops"
+        "Ateo.TwitchDrops",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"
