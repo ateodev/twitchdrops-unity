@@ -96,6 +96,15 @@ namespace Ateo.TwitchDrops
                 responseJson =>
                 {
                     var result = JsonUtility.FromJson<RedeemResponse>(responseJson);
+                    Debug.Log(
+                        $"[TwitchDrops] Code redeemed successfully.\n" +
+                        $"  Code:         {result.code}\n" +
+                        $"  Code ID:      {result.codeId}\n" +
+                        $"  Item ID:      {result.itemId}\n" +
+                        $"  Display Name: {result.displayName}\n" +
+                        $"  Twitch UID:   {result.twitchUserId}\n" +
+                        $"  Campaign ID:  {result.campaignId}"
+                    );
                     OnDropGranted?.Invoke(result.itemId, result.displayName);
                     onSuccess?.Invoke(result.itemId, result.displayName);
                 },
@@ -117,8 +126,12 @@ namespace Ateo.TwitchDrops
         private class RedeemResponse
         {
             public bool success;
+            public string codeId;
+            public string code;
             public string itemId;
             public string displayName;
+            public string twitchUserId;
+            public string campaignId;
         }
     }
 }
